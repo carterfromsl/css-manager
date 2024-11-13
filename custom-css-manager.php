@@ -2,13 +2,13 @@
 /*
 Plugin Name: Custom CSS Manager
 Plugin URI: https://github.com/carterfromsl/css-manager/
-Description: Allows custom CSS file creation, editing, and deletion, registering files to load in the header with cache-busting.
-Version: 1.7.6.2
+Description: Allows custom CSS file creation, editing, and deletion, registering files to load in the header with cache-busting. Install StratLab Updator for auto-updates.
+Version: 1.7.6.3
 Author: StratLab Marketing
 Author URI: https://strategylab.ca
 Text Domain: css-manager
 Requires at least: 6.0
-Requires PHP: 8.0
+Requires PHP: 7.0
 Update URI: https://github.com/carterfromsl/css-manager/
 */
 
