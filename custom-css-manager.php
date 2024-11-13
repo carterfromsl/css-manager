@@ -9,7 +9,7 @@ Author URI: https://strategylab.ca
 Text Domain: css-manager
 Requires at least: 6.0
 Requires PHP: 8.0
-Update URI: https://github.com/carterfromsl/css-manager
+Update URI: https://github.com/carterfromsl/css-manager/
 */
 
 // Create the directory for CSS files if it doesn't exist
