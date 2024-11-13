@@ -42,10 +42,10 @@ function create_css_manager_table() {
 }
 add_action('after_setup_theme', 'create_css_manager_table');
 
-require_once plugin_dir_path(__FILE__) . 'GitHubUpdater.php';
+require_once plugin_dir_path(__FILE__) . 'cssGitHubUpdater.php';
 
 if (is_admin()) {
-    new GitHubUpdater(__FILE__);
+    new cssGitHubUpdater(__FILE__);
 }
 
 // Register AJAX handlers for create, edit, delete
