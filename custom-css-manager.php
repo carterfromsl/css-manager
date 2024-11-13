@@ -2,9 +2,13 @@
 /*
 Plugin Name: Custom CSS Manager
 Description: Allows custom CSS file creation, editing, and deletion, registering files to load in the header with cache-busting.
-Version: 1.7.5
+Version: 1.7.6
 Author: StratLab Marketing
 Author URI: https://strategylab.ca
+Text Domain: css-manager
+Requires at least: 6.0
+Requires PHP: 8.0
+Update URI: https://github.com/carterfromsl/css-manager
 */
 
 // Create the directory for CSS files if it doesn't exist
@@ -37,6 +41,11 @@ function create_css_manager_table() {
 }
 add_action('after_setup_theme', 'create_css_manager_table');
 
+require_once plugin_dir_path(__FILE__) . 'GitHubUpdater.php';
+
+if (is_admin()) {
+    new GitHubUpdater(__FILE__);
+}
 
 // Register AJAX handlers for create, edit, delete
 add_action('wp_ajax_css_manager_save_file', 'css_manager_save_file');
