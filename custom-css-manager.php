@@ -2,7 +2,7 @@
 /*
 Plugin Name: Custom CSS Manager
 Description: Allows custom CSS file creation, editing, and deletion, registering files to load in the header with cache-busting.
-Version: 1.7.6
+Version: 1.7.6.1
 Author: StratLab Marketing
 Author URI: https://strategylab.ca
 Text Domain: css-manager
@@ -921,3 +921,16 @@ function css_manager_enqueue_admin_files() {
     }
 }
 add_action('admin_enqueue_scripts', 'css_manager_enqueue_admin_files');
+
+// Add a shortcode to display the plugin version
+function css_manager_version_shortcode() {
+    // Retrieve the plugin data to get the version number
+    $plugin_data = get_plugin_data(__FILE__);
+    $version = $plugin_data['Version'];
+
+    // Return the version number wrapped in a <b> tag
+    return '<b>' . esc_html($version) . '</b>';
+}
+
+// Register the shortcode
+add_shortcode('css-manager-version', 'css_manager_version_shortcode');
