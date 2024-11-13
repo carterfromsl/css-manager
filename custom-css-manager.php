@@ -1,6 +1,7 @@
 <?php
 /*
 Plugin Name: Custom CSS Manager
+Plugin URI: https://github.com/carterfromsl/css-manager/
 Description: Allows custom CSS file creation, editing, and deletion, registering files to load in the header with cache-busting.
 Version: 1.7.6.1
 Author: StratLab Marketing
