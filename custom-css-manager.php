@@ -42,11 +42,23 @@ function create_css_manager_table() {
 }
 add_action('after_setup_theme', 'create_css_manager_table');
 
-require_once plugin_dir_path(__FILE__) . 'cssGitHubUpdater.php';
+// Connect with the StratLab Auto-Updater for plugin updates
+add_action('plugins_loaded', function () {
+    if (class_exists('StratLabUpdater')) {
+        $plugin_file = __FILE__;
+        $plugin_data = get_plugin_data($plugin_file);
 
-if (is_admin()) {
-    new cssGitHubUpdater(__FILE__);
-}
+        do_action('stratlab_register_plugin', [
+            'slug' => plugin_basename($plugin_file),
+            'repo_url' => 'https://api.github.com/repos/carterfromsl/css-manager/releases/latest',
+            'version' => $plugin_data['Version'], =
+            'name' => $plugin_data['Name'],
+            'author' => $plugin_data['Author'],
+            'homepage' => $plugin_data['PluginURI'],
+            'description' => $plugin_data['Description'], 
+        ]);
+    }
+});
 
 // Register AJAX handlers for create, edit, delete
 add_action('wp_ajax_css_manager_save_file', 'css_manager_save_file');
