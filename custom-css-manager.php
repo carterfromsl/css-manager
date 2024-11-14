@@ -3,7 +3,7 @@
 Plugin Name: Custom CSS Manager
 Plugin URI: https://github.com/carterfromsl/css-manager/
 Description: Allows custom CSS file creation, editing, and deletion, registering files to load in the header with cache-busting. Install StratLab Updator for auto-updates.
-Version: 1.7.6.3
+Version: 1.7.6.4
 Author: StratLab Marketing
 Author URI: https://strategylab.ca
 Text Domain: css-manager
@@ -11,6 +11,25 @@ Requires at least: 6.0
 Requires PHP: 7.0
 Update URI: https://github.com/carterfromsl/css-manager/
 */
+
+// Connect with the StratLab Auto-Updater for plugin updates
+add_action('plugins_loaded', function() {
+    if (class_exists('StratLabUpdater')) {
+        $plugin_file = __FILE__;
+        $plugin_data = get_plugin_data($plugin_file);
+
+        do_action('stratlab_register_plugin', [
+            'slug' => plugin_basename($plugin_file),
+            'repo_url' => 'https://api.github.com/repos/carterfromsl/css-manager/releases/latest',
+            'version' => $plugin_data['Version'], 
+            'name' => $plugin_data['Name'],
+            'author' => $plugin_data['Author'],
+            'homepage' => $plugin_data['PluginURI'],
+            'description' => $plugin_data['Description'],
+            'access_token' => '', // Add if needed for private repo
+        ]);
+    }
+});
 
 // Create the directory for CSS files if it doesn't exist
 function css_manager_create_directory() {
@@ -41,24 +60,6 @@ function create_css_manager_table() {
     dbDelta($sql);
 }
 add_action('after_setup_theme', 'create_css_manager_table');
-
-// Connect with the StratLab Auto-Updater for plugin updates
-add_action('plugins_loaded', function () {
-    if (class_exists('StratLabUpdater')) {
-        $plugin_file = __FILE__;
-        $plugin_data = get_plugin_data($plugin_file);
-
-        do_action('stratlab_register_plugin', [
-            'slug' => plugin_basename($plugin_file),
-            'repo_url' => 'https://api.github.com/repos/carterfromsl/css-manager/releases/latest',
-            'version' => $plugin_data['Version'], =
-            'name' => $plugin_data['Name'],
-            'author' => $plugin_data['Author'],
-            'homepage' => $plugin_data['PluginURI'],
-            'description' => $plugin_data['Description'], 
-        ]);
-    }
-});
 
 // Register AJAX handlers for create, edit, delete
 add_action('wp_ajax_css_manager_save_file', 'css_manager_save_file');
