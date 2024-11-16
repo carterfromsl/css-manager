@@ -3,7 +3,7 @@
 Plugin Name: Custom CSS Manager
 Plugin URI: https://github.com/carterfromsl/css-manager/
 Description: Allows custom CSS file creation, editing, and deletion, registering files to load in the header with cache-busting. Install StratLab Updator for auto-updates.
-Version: 1.7.6.5
+Version: 1.7.6.6
 Author: StratLab Marketing
 Author URI: https://strategylab.ca
 Text Domain: css-manager
@@ -144,10 +144,33 @@ function css_manager_create_file() {
         return;
     }
 
-    // Create a new empty CSS file
-    if (file_put_contents($file_path, '') !== false) {
+    // Create a new empty CSS file with header information
+    $current_user = wp_get_current_user();
+    $username = $current_user->user_login;
+    $first_name = $current_user->first_name;
+    $last_name = $current_user->last_name;
+    $nickname = $current_user->nickname;
+
+    if (!empty($nickname)) {
+        $user_display = "$username ($nickname)";
+    } elseif (!empty($first_name) || !empty($last_name)) {
+        $user_display = "$username ($first_name $last_name)";
+    } else {
+        $user_display = $username;
+    }
+
+    $current_time = current_time('mysql');
+    $theme = wp_get_theme();
+    $theme_name = $theme->get('Name');
+
+    $file_header = "/* CSS File: $file\n";
+    $file_header .= " * Created by $user_display on $current_time\n";
+    $file_header .= " * Last Updated: $current_time by $user_display\n";
+    $file_header .= " * Active Theme: $theme_name\n";
+    $file_header .= " */\n\n";
+
+    if (file_put_contents($file_path, $file_header) !== false) {
         error_log('File created successfully: ' . $file_path); // Log successful creation
-        file_put_contents($file_path, "/* New CSS file: $file */\n");
 
         // Insert new record into the database
         global $wpdb;
@@ -156,7 +179,7 @@ function css_manager_create_file() {
             $table_name,
             array(
                 'file_name' => $file,
-                'last_edited' => current_time('mysql'),
+                'last_edited' => $current_time,
                 'active' => 0,
                 'enqueue_location' => 'everywhere'
             ),
